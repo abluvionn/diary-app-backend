@@ -12,11 +12,11 @@ const config = {
   port: (process.env['PORT'] && parseInt(process.env['PORT'])) || '8000',
   publicPath: path.join(rootPath, 'public'),
   mongoose: {
-    db: process.env['MONGO_DB_URL'] || '',
+    db: process.env['MONGO_DB_URL'] || 'mongodb://127.0.0.1:27017/diaryApp',
   },
   IpWhiteList: ['http://localhost:5173'],
   JwtAccessExpiresAt: 60 * 15,
-  JwtRefreshExpiresAt: 60 * 60 * 24 * 30,
+  JwtRefreshExpiresAt: 1000 * 60 * 60 * 370,
 };
 
 export default config;

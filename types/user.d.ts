@@ -12,15 +12,9 @@ export interface UserFields {
 }
 
 export interface UserFromDb extends Omit<UserFields, 'password'> {
-  _id: any;
+  _id: ObjectId;
 }
 
 export interface DecodedJwt extends JwtPayload {
   user?: string;
 }
-
-export interface UserMethods {
-  checkPassword(password: string): Promise<boolean>;
-}
-
-export type UserModel = Model<UserFields, object, UserMethods>;

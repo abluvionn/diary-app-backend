@@ -1,0 +1,30 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "rules": {
+    "semi": ["error"],
+    "quotes": ["warn", "single", { "avoidEscape": true }],
+    "eqeqeq": ["error", "smart"],
+    "no-template-curly-in-string": "error",
+    "camelcase": ["error", {"properties": "never"}],
+    "no-else-return": "error",
+    "no-empty": "error",
+    "no-empty-function": "error",
+    "no-lone-blocks": "error",
+    "no-nested-ternary": "error",
+    "no-return-assign": "error",
+    "prefer-arrow-callback": ["error", { "allowUnboundThis": true }],
+    "prefer-const": ["error", { "destructuring": "all" }],
+    "require-await": "error",
+    "comma-dangle": ["error", "only-multiline"],
+    "object-curly-spacing": ["warn", "always"],
+    "space-in-parens": ["error", "never"],
+    "arrow-parens": ["error", "always"]
+  }
+}
