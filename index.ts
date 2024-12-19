@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import config from './config';
+import usersRouter from './routes/users';
 import cookieParser from 'cookie-parser';
 
 const app = express();
@@ -18,6 +19,8 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static('public'));
+
+app.use('/users', usersRouter);
 
 const run = async () => {
   await mongoose.connect(config.mongoose.db);
