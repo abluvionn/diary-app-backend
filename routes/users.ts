@@ -26,7 +26,30 @@ async function userRegister(req: Request, res: Response, next: NextFunction) {
     });
 
     await user.save();
-    return res.send(user);
+
+    const accessToken = jwt.sign(
+      { user: user._id },
+      `${process.env.JWT_ACCESS}`,
+      {
+        expiresIn: `${config.JwtAccessExpiresAt}s`,
+      }
+    );
+
+    const refreshToken = jwt.sign(
+      { user: user._id },
+      `${process.env.JWT_REFRESH}`,
+      {
+        expiresIn: `${config.JwtRefreshExpiresAt}ms`,
+      }
+    );
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      maxAge: config.JwtRefreshExpiresAt,
+    });
+
+    return res.send({ accessToken, user });
+    
   } catch (e) {
     if (e instanceof Error.ValidationError) {
       return res.status(422).send({ error: e });
