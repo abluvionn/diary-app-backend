@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import config from './config';
 import usersRouter from './routes/users';
 import cookieParser from 'cookie-parser';
+import entriesRouter from './routes/entries';
 
 const app = express();
 const localhost = `http://localhost:${config.port}`;
@@ -13,7 +14,7 @@ app.use(
     origin: config.IpWhiteList,
     credentials: true,
     optionsSuccessStatus: 200,
-  }),
+  })
 );
 
 app.use(express.json());
@@ -21,6 +22,7 @@ app.use(cookieParser());
 app.use(express.static('public'));
 
 app.use('/users', usersRouter);
+app.use('/entries', entriesRouter);
 
 const run = async () => {
   await mongoose.connect(config.mongoose.db);
