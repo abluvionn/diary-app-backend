@@ -11,10 +11,19 @@ configDotenv();
 
 const usersRouter = express.Router();
 
+usersRouter.get('/testing', testing);
 usersRouter.post('/', userRegister);
 usersRouter.post('/sessions', userLogin);
 usersRouter.get('/refresh', VerifyRefreshToken, userRefreshToken);
 usersRouter.delete('/logout', userLogout);
+
+function testing(_req: Request, res: Response, next: NextFunction) {
+  try {
+    return res.send('Test');
+  } catch (error) {
+    next(error);
+  }
+}
 
 async function userRegister(req: Request, res: Response, next: NextFunction) {
   try {
@@ -49,7 +58,6 @@ async function userRegister(req: Request, res: Response, next: NextFunction) {
     });
 
     return res.send({ accessToken, user });
-    
   } catch (e) {
     if (e instanceof Error.ValidationError) {
       return res.status(422).send({ error: e });
