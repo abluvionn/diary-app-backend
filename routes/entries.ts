@@ -18,13 +18,15 @@ entriesRouter.post(
         title: req.body.title,
         image: req.file ? req.file.filename : null,
         text: req.body.text,
-        author: req.user._id
+        author: req.user._id,
       };
 
       const entry = new Entry(entryData);
       await entry.save();
 
-      return res.send(entry);
+      const entryToSend = await Entry.findOne({ _id: entry._id }).populate('author', 'email');
+
+      return res.send(entryToSend);
     } catch (error) {
       if (req.file) {
         clearImage(req.file.filename);
@@ -39,7 +41,7 @@ entriesRouter.post(
 
 entriesRouter.get('/', async (_req, res, next) => {
   try {
-    const entries = await Entry.find();
+    const entries = await Entry.find().populate('author', 'email');
     return res.send(entries);
   } catch (error) {
     next(error);
