@@ -14,7 +14,7 @@ const config = {
   mongoose: {
     db: process.env['MONGO_DB_URL'] || 'mongodb://127.0.0.1:27017/diaryApp',
   },
-  IpWhiteList: ['http://localhost:3000'],
+  IpWhiteList: ['http://localhost:3000', process.env['ALLOWED_ORIGIN'] || ''],
   JwtAccessExpiresAt: 60 * 15,
   JwtRefreshExpiresAt: 1000 * 60 * 60 * 370,
 };
