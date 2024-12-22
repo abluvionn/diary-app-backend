@@ -5,6 +5,8 @@ import auth from '../middleware/Auth';
 import { EntryFields } from '../types/entry';
 import { RequestWithUser } from '../types/user';
 import Entry from '../models/Entry';
+import cloudinary from '../cloudinary';
+import { UploadApiResponse } from 'cloudinary';
 
 const entriesRouter = express.Router();
 
@@ -14,9 +16,14 @@ entriesRouter.post(
   imagesUpload.single('image'),
   async (req: RequestWithUser, res, next) => {
     try {
+      let imageUploadResult: UploadApiResponse | null = null;
+      if (req.file) {
+        imageUploadResult = await cloudinary.uploader.upload(req.file.path);
+      }
+
       const entryData: EntryFields = {
         title: req.body.title,
-        image: req.file ? req.file.filename : null,
+        image: imageUploadResult ? imageUploadResult.secure_url : null,
         text: req.body.text,
         author: req.user._id,
       };
@@ -24,7 +31,10 @@ entriesRouter.post(
       const entry = new Entry(entryData);
       await entry.save();
 
-      const entryToSend = await Entry.findOne({ _id: entry._id }).populate('author', 'email');
+      const entryToSend = await Entry.findOne({ _id: entry._id }).populate(
+        'author',
+        'email'
+      );
 
       return res.send(entryToSend);
     } catch (error) {

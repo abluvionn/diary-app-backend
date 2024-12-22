@@ -23,8 +23,7 @@ const fileFilter = (
   file: Express.Multer.File,
   cb: multer.FileFilterCallback
 ) => {
-  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/webp', 'image/png', 'image/gif'];
-  if (allowedTypes.includes(file.mimetype)) {
+  if (file.mimetype.startsWith('image/')) {
     cb(null, true);
   } else {
     cb(new Error('Not supported file type.'));
@@ -34,7 +33,7 @@ const fileFilter = (
 export const imagesUpload = multer({
   storage: imageStorage,
   fileFilter,
-  limits: { fileSize: 2 * 1024 * 1024 },
+  limits: { fileSize: 2 * 1024 * 1024 }, // 2MB limit
 });
 
 export const clearImage = (imageName: string) => {
